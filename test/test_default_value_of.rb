@@ -46,4 +46,15 @@ class TestDefaultValueOf < MiniTest::Unit::TestCase
     instance.foo = nil
     assert_nil instance.foo
   end
+
+  def test_default_value_of_works_when_no_setter_is_provided
+    klass = Class.new do
+      include Pethau::DefaultValueOf
+      attr_reader :foo
+      default_value_of :foo, "Yo!"
+    end
+
+    instance = klass.new
+    assert_equal "Yo!", instance.foo
+  end
 end

@@ -34,6 +34,7 @@ module Pethau
 
       def default_value_setter_for attribute_name
         setter_name = "#{attribute_name}="
+        return unless method_defined? setter_name
         setter_with_recorder = "#{attribute_name}_with_recorder="
         setter_without_recorder = "#{attribute_name}_without_recorder="
         alias_method setter_without_recorder, setter_name
