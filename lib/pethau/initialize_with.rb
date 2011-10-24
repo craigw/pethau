@@ -13,6 +13,7 @@ module Pethau
 
         define_method :initialize do |*initial_args|
           args.each do |arg|
+            break if initial_args.empty?
             send "#{arg}=", initial_args.shift
           end
         end
