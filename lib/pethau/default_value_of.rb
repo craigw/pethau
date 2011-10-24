@@ -23,9 +23,12 @@ module Pethau
     end
 
     module ClassMethods
-      def default_value_of attribute_name, &builder
+      def default_value_of attribute_name, default_value = nil, &builder
+        if default_value && block_given?
+          raise "Only provide one of default value or builder" 
+        end
         default_value_setter_for attribute_name
-        default_value_getter_for attribute_name, builder
+        default_value_getter_for attribute_name, default_value, &builder
       end
       private :default_value_of
 
@@ -41,8 +44,9 @@ module Pethau
         end
         alias_method setter_name, setter_with_recorder
       end
+      private :default_value_setter_for
 
-      def default_value_getter_for attribute_name, builder
+      def default_value_getter_for attribute_name, default_value, &builder
         getter_with_default = "#{attribute_name}_with_default"
         getter_without_default = "#{attribute_name}_without_default"
         alias_method getter_without_default, attribute_name
@@ -51,10 +55,12 @@ module Pethau
           original_value = send getter_without_default
           return original_value if original_value
           return original_value if value_set_for? attribute_name
-          builder.call
+          return builder.call if block_given?
+          default_value
         end
         alias_method attribute_name, getter_with_default
       end
+      private :default_value_setter_for
     end
   end
 end

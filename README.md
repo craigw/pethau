@@ -44,17 +44,25 @@ it in `Object` but I didn't want to make that decision for you.
 It's useful to provide default values for attribute when they're not defined, but it's annoying to type code like this all the time:
 
     class Quux
-      attr_reader :corge
+      attr_writer :corge, :foo
+
       def corge
         @corge || "Default Value"
+      end
+
+      def foo
+        @foo || FooBuilder.new.execute
       end
     end
 
 Instead, I prefer this:
 
     class Quux
-      attr_reader :corge
-      default_value_of :corge do "Default Value" end
+      attr_accessor :corge, :foo
+      default_value_of :corge, "Default Value"
+      default_value_of :foo do
+        FooBuilder.new.execute
+      end
     end
 
 Combining it with InitializeWith yields a rather nice, readable, concise
@@ -62,5 +70,8 @@ class definition:
 
     class Grault
       initialize_with :garply, :waldo
-      default_value_of :waldo do Plugh.new end
+      default_value_of :waldo do
+        plugh = Plugh.new
+        plugh.execute
+      end
     end

@@ -10,6 +10,18 @@ class TestDefaultValueOf < MiniTest::Unit::TestCase
   
     assert_equal "HELLO, WORLD", instance.foo
   end
+
+  def test_default_value_of_returns_default_value_when_literal_given
+    klass = Class.new do
+      include Pethau::DefaultValueOf
+      attr_accessor :foo
+      default_value_of :foo, "HELLO, WORLD"
+    end
+  
+    instance = klass.new
+  
+    assert_equal "HELLO, WORLD", instance.foo
+  end
   
   def test_default_value_of_returns_set_value_when_provided
     klass = Class.new do
