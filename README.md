@@ -39,6 +39,7 @@ and DRY it up:
 Since this is used in a lot of places in my projects I tend to include
 it in `Object` but I didn't want to make that decision for you.
 
+
 ### default\_value\_of
 
 It's useful to provide default values for attribute when they're not defined, but it's annoying to type code like this all the time:
@@ -74,4 +75,25 @@ class definition:
         plugh = Plugh.new
         plugh.execute
       end
+    end
+
+
+### private\_attr\_accessor
+
+I tend to avoid using instance variables where possible, my opinion
+being that they couple you to the implementation of the class where
+using accessors tie you only to the internal class interface - I've
+found that the later makes it faster and easier to refactor my code.
+
+Instead of typing this all the time:
+
+    class Boggle
+      attr_accessor :orf, :gin
+      private :orf=, :orf, :gin=, :gin
+    end
+
+I can type this:
+
+    class Boggle
+      private_attr_accessor :orf, :gin
     end
