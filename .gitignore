@@ -1,1 +1,4 @@
-pethau-*.gem
+*.gem
+.bundle
+Gemfile.lock
+pkg/*
